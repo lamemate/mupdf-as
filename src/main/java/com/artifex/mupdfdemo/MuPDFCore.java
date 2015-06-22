@@ -47,6 +47,7 @@ public class MuPDFCore
 	private native RectF[] searchPage(String text);
 	private native TextChar[][][][] text();
 	private native byte[] textAsHtml();
+	private native void addLinkAnnotationInternal(PointF[] quadPoints, String uri);
 	private native void addMarkupAnnotationInternal(PointF[] quadPoints, int type);
 	private native void addInkAnnotationInternal(PointF[][] arcs);
 	private native void deleteAnnotationInternal(int annot_index);
@@ -306,6 +307,12 @@ public class MuPDFCore
 		}
 
 		return lns.toArray(new TextWord[lns.size()][]);
+	}
+
+	public synchronized void addLinkAnnotation(int page, PointF[] quadPoints, String uri)
+	{
+		gotoPage(page);
+		addLinkAnnotationInternal(quadPoints, uri);
 	}
 
 	public synchronized void addMarkupAnnotation(int page, PointF[] quadPoints, Annotation.Type type) {
